@@ -1,0 +1,71 @@
+using System;
+
+// Define the Employee class with properties for Id, FirstName, and LastName
+public class Employee
+{
+    public int Id { get; set; } // Property to hold the employee's ID
+    public string FirstName { get; set; } // Property to hold the employee's first name
+    public string LastName { get; set; } // Property to hold the employee's last name
+
+    // Overload the "==" operator to compare two Employee objects
+    public static bool operator ==(Employee emp1, Employee emp2)
+    {
+        // Check if both objects are the same instance
+        if (ReferenceEquals(emp1, emp2))
+        {
+            return true; // They are the same instance, thus equal
+        }
+
+        // Check if either object is null
+        if (emp1 is null || emp2 is null)
+        {
+            return false; // One is null, thus they are not equal
+        }
+
+        // Compare the Id properties to determine equality
+        return emp1.Id == emp2.Id;
+    }
+
+    // Overload the "!=" operator as well (must be paired with "==")
+    public static bool operator !=(Employee emp1, Employee emp2)
+    {
+        // Use the overloaded "==" operator for the opposite logic
+        return !(emp1 == emp2); // If they are not equal, return true
+    }
+
+    // Override the Equals method to provide a custom equality comparison
+    public override bool Equals(object obj)
+    {
+        // Check if the passed object is an Employee
+        if (obj is Employee otherEmployee)
+        {
+            return this.Id == otherEmployee.Id; // Compare Ids for equality
+        }
+        return false; // Not an Employee, so not equal
+    }
+
+    // Override the GetHashCode method as it's recommended when overriding Equals
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode(); // Return the hash code for the Id property
+    }
+}
+
+// Main program class
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Instantiate two Employee objects and assign values to their properties
+        Employee employee1 = new Employee { Id = 1, FirstName = "John", LastName = "Doe" };
+        Employee employee2 = new Employee { Id = 1, FirstName = "Jane", LastName = "Smith" };
+
+        // Compare the two Employee objects using the overloaded == operator
+        bool areEqual = employee1 == employee2; // Using the overloaded operator
+        bool areNotEqual = employee1 != employee2; // Using the overloaded operator
+
+        // Display the results of the comparisons
+        Console.WriteLine($"Are employee1 and employee2 equal? {areEqual}"); // Outputs: True
+        Console.WriteLine($"Are employee1 and employee2 not equal? {areNotEqual}"); // Outputs: False
+    }
+}
